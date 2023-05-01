@@ -72,14 +72,15 @@ begin
 
     p_pop: process (clk, re, empty_internal, read_index, data)
     begin
-        if rising_edge(clk) and re = '1' then
-            if empty_internal = '0' then
-                rd_data <= data(read_index);
+        if rising_edge(clk) then
+            rd_data <= data(read_index);
+        end if;
+        if rising_edge(clk) and re = '1' then 
             -- synthesis translate_off
-            else 
-                report "FIFO: attempt to read when empty!";
-            -- synthesis translate_on
+            if empty_internal = '1' then 
+                report "FIFO: attempt to pop when empty!";
             end if;
+            -- synthesis translate_on
 
             if read_index = FIFO_DEPTH-1 then
                 read_index <= 0;
