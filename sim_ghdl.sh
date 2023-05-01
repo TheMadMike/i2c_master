@@ -31,16 +31,13 @@ testbench_entity=$1_tb
 waveform_file=$1.ghw
 
 # analyze
-ghdl -a $entity_file
-ghdl -a $testbench_file
-
+ghdl -a --std=08 $entity_file
+ghdl -a --std=08 $testbench_file 
 # elaborate
-ghdl -e $testbench_entity
+ghdl -e --std=08 $testbench_entity
 
 # run the simulation and generate the waveform
 ./$testbench_entity --stop-time=$stop_time --wave=$waveform_file
 
 # cleanup
-rm *.o
 rm $testbench_entity
-rm *.cf
